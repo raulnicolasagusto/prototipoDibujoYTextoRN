@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, TextInput, Text, Dimensions, ScrollView, Platform } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Dimensions, ScrollView, Platform, TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { StatusBar } from 'expo-status-bar';
 
@@ -31,6 +31,10 @@ export default function App() {
     setCurrentPath(`M${locationX},${locationY}`);
   };
 
+  const handleClearDrawing = () => {
+    setMainPaths([]);
+  };
+
   return (
     <View style={styles.root}>
       <ScrollView contentContainerStyle={styles.scrollContent} style={{flex:1}}>
@@ -51,10 +55,17 @@ export default function App() {
             ))}
           </Svg>
         </View>
-        <View style={{height:120}} />
+        <View style={{height:150}} />
       </ScrollView>
+      
       <View style={styles.inputBoxContainerAbsolute} pointerEvents="box-none">
+      
         <Text style={styles.inputBoxLabel}>Draw here (writes to sheet above)</Text>
+        <View>
+         <TouchableOpacity style={styles.clearButton} onPress={handleClearDrawing}>
+          <Text style={styles.clearButtonText}>Clear Drawing</Text>
+        </TouchableOpacity>
+      </View>
         <View
           style={styles.inputBox}
           onStartShouldSetResponder={() => true}
@@ -67,6 +78,7 @@ export default function App() {
             {currentPath ? <Path d={currentPath} stroke="black" strokeWidth={2} fill="none" /> : null}
           </Svg>
         </View>
+       
       </View>
       <StatusBar style="auto" />
     </View>
@@ -136,7 +148,7 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   inputBox: {
-    width: width - 20,
+    width: width - 40,
     height: 100,
     borderColor: '#007AFF',
     borderWidth: 2,
@@ -144,6 +156,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#eef6ff',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
+  },
+  clearButton: {
+    marginTop: 8,
+    backgroundColor: '#ff5252',
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
